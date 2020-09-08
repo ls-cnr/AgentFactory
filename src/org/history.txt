@@ -1,0 +1,387 @@
+History of AgentFactory 2.0
+---------------------------
+Mer 2 Aprile 2003
+Gli eventi partono sempre dalle classi EntityXYZ. Tutte le classi wrapper si interpongono tra
+i DataType e le entity di un modello. Ad un wrapper sono assegnati i seguenti ruoli:
+* ascoltare gli eventi provenienti dal modello e aggiornare i DataType figli
+* ascoltare gli eventi provenienti dal DataType e modificare il modello
+Nella seconda situazione (la più complessa) avviene un ciclo: 
+    1) utente cambia il dato visualizzato dal datatype nella JTextFiled
+    2) il wrapper viene informato del cambiamento del DataType ad esso associato
+    3) il wrapper modifica il modello
+    4) il modello avverte tutti gli ascoltatori (tra cui il wrapper)
+    5) il wrapper riceve l'evento di modifica
+    6) il wrapper cambia il dato associato al DataType
+
+Adesso vorrei migliorare la class_diagram in modo che UMLClassDiagram sia una classe astratta,
+e che ad essa si passi una tool_bar in cui oltre all'icona FRECCIA per le operazioni di selezione
+e di spostamento si passi anche una serie di bottoni personalizzabili con
+* tipo
+* stereotipo
+Esempio: classe di tipo Agent, oppure directional_relation di tipo Communication
+
+A questo punto si passa pure un ascoltatore che riceve eventi di 
+creazione/cancellazione/doppio_click sulle entità del diagramma; in base allo steretipo 
+passato la classe si occupa di creare l'entità corretta nel modello.
+Esempio: creazione di un Agente nella CommunicationDiagram, oppure creazione di una classe Task
+nella SASDDiagram.
+Naturalmente ad ogniuno di questi eventi deve corrispondere una azione diversa.
+
+
+Mar 1 Aprile 2003
+Aggiornato TreeModelUpdate che risulta anche più semplice con la nuova configurazione 
+degli eventi.
+Modificato il modo in cui EntityEdit lancia gli eventi: inibisce il lancio degli eventi,
+effettua le operazioni e poi lancia un evento di tipo Edit entity.
+Curata meglio la gerarchia delle classi Wrapper.
+
+
+Dom 30 Marzo 2003
+1)Introdotta la classe Constructor
+2)Modificate EntityEdit e EntityMerge in modo che non cambino l'oggetto riferito
+3)Introdotto modello ad eventi di tipo Data - EventListener
+4)Modificate classi EnitityXYZ in modo che lancino gli eventi [AGGIUNGERE EVENTI FAILURE]
+
+Da fare: modificare TreeModelUpdate in modo da adattarlo al nuovo sistema ad eventi
+Lo stesso con la classe PropertyPanel
+
+Sab 29 Marzo 2003
+Effettuato il debig del problema incontrato ieri: alla base c'era un erroneo comportamento
+della classe EntityDelete che eliminava elementi della lista con l'istruzione remove dentro un ciclo
+iteration.
+Adesso bisogna risolvere due problemi che sono spuntati:
+1) quando si effettua il rename di una classe non è logicamente corretto che la classe cambi. Il questo 
+modo si rischia di perdere il riferimento al nuovo elemento.
+ATTENZIONE: anche EntityMerge ha lo stesso difetto.
+
+2) introdurre un Constructor che estende Operation e che stampa il proprio nome in base al valore del
+parent.
+
+
+Ven 28 Marzo 2003 ore 20:00
+Introdotte delle classi Wrapper per le entità del modello. Una classe wrapper riceve una entità
+e si occupa di costruire l'aggregation o la listdatatype per la visualizzazione nel pannello.
+Esso si propone anche come ascoltatore degli eventi dei datatype figli. Il meccanismo funziona alla grande
+tranne che in un caso: il rename degli agenti. Probabilmente si incontrerà qualche problema anche
+con l'aggiunta di una riga nella tabella.
+
+
+Ven 28 Marzo 2003
+Dopo un combattimento sfrenato sono arrivato ad una situazione stabile.
+La property navigation panel funziona. L'ho impostata in questa maniera:
+a sinistra c'è l'elenco di properietà di un oggetto. Ogni properietà può essere editato in loco
+(SimpleDataType) oppure editato nel pannello di destra (ComplexDataType). In particolare
+l'oggetto più complesso da gestire è stato il ListDataType che rappresenta una tabella di elementi.
+Gli elementi semplici vengono editati direttamente, mentre quelli complessi presentano un bottone. Il 
+bottone da luogo ad un cambiamento nel pannello sempre di destra.
+Questi cambiamenti sono navigabili tramite due pulsanti in stile Internet Explorer.
+
+Adesso si deve aggiungere la gestione dell'editing degli elementi. In pratica questo deve far scaturire 
+un evento che si deve propagare fino al "proprietario" del DataType. Deve essere lui poi a effettuare
+le modifiche sul dato effettivo ed eventualmente rigettare la modifica.
+Concetto simile per la creazione/cancellazione di una riga nella tabella.
+
+Procedo creando una interfaccia DataTypeListener che serve a notificare un evento di cambiamento.
+Quindi aggiungo un metodo notifyListener che permette di notificare che si vuole procedere con un
+cambiamento. Sta poi al listener accettare il cambiamento oppure no usando il metodo setValue. 
+Conviene usare setValue anche per rifiutare la modifica.
+
+A questo punto bisogna intercettare anche le modifiche sulla lista: aggiungi e rimuovi una riga.
+
+
+
+Mar 25 Marzo 2003
+Sia la property panel che la list_panel hanno ancora dei difetti e delle incongruenze. Tuttavia la
+grande connessione che esiste tra questi due panel mi hanno convinto che essi devono essere
+integrati in una unica form. In questo modo la gestione dei bottoni può avvenire allo stesso modo
+e la navigation bar si riferisce a tutti e due i pannelli.
+Ecco i dubbi:
+
+1) quando dalla property panel clicco su un bottone cambia la data panel. Tuttavia la property non
+viene cambiata. Prima di mettere la combinazione (property,data) nello stack forse dovrei controllare
+che questa combinazione non esista già? Altrimenti potrei premere molte volte sullo stesso pulsante
+e ottenere un riempimento inutile dello stack. Oppure potrei disabilitare il pulsante relativo?
+
+2) nello stack forse conviene memorizzare direttamente i panel così non si devono costruirli più volte. Ancora
+meglio forse sarebbe mettere anche la scrollbar.
+
+3) la list panel non può essere l'unica forma di dato editabile presente nel container. Si pensi
+al campo documentation di una classe. Si potrebbe fare una cosa per cui ogni elemento può essere direttamente
+editato dentro la property panel ma anche nel pannello destro.
+Inoltre potremmo far si che un container non contenga altri container per semplificare di molto
+la gestione.
+
+
+Lun 24 Marzo 2003
+Implementata la navigation bar del properties panel: ai componenti di tipo PropertyContainer viene associato
+un bottone. Questo bottone viene collegato con un evento. Quando l'evento click è attivato il panel
+viene modificato per rispecchiare le caratteristiche del nuovo container. Inoltre tramite due pulsanti
+è possibile salire di un livello nella gerarrchia oppure tornare immediatamente al primo container.
+
+Adesso si deve attivare un property di tipo differente: ListProperties che elenca proprietà omogenee,
+e che deve essere visualizzato possibilmente in un panello orizzontale nel quale l'utente possa inserire nuovi items.
+Una applicazione pratica sarà ad esempio quella degli elenchi di attributi, metodi, task...
+
+Nella tabella però ci possono essere dei pulsanti che cambiano la properties panel. Studiare un meccanismo per
+una navigazione sensata. Ad esempio questa nuova tabella potrebbe apparire in modalità "dialog" per
+evitare complicazioni.
+Oppure bisogna gestire cosa accade nel caso di tutti i possibili eventi. Una soluzione potrebbe essere
+che gli eventi della tabella li gestisce la properties panel stessa.
+
+
+Dom 22 Marzo 2003
+Dopo aver sperimentato diverse soluzione per implementare la tabella di proprietà la soluzione
+migliore è quella di usare un panello con GridLayout impostato con più righe di quelle che
+il pannello stesso possa contenere.
+
+A questo punti introduco una nuova interfaccia:
+
+public interface PropertyTableItem {
+	public Component getComponent();
+}
+
+implementata da ogni item che può essere presente nella tabella delle proprietà. Ogni classe
+definisce il prorpio componente che va visualizzato sul panel.
+
+
+Ven 21 Marzo 2003
+Ho spostato tutto il codice relativo alla gestione degli eventi del mouse da dentro la classe
+UMLClassDiagram in due classi dello stesso package (con permessi particolari di accesso) chiamate
+EditAction e AddClassAction entrambe implementano l'interfaccia MouseAction. 
+
+public interface MouseAction {
+	public void mousePressed(java.awt.event.MouseEvent evt);
+	public void mouseDrag(java.awt.event.MouseEvent evt);
+	public void mouseReleased(java.awt.event.MouseEvent evt);
+}
+
+In questo modo posso gestire le diverse selezioni degli strumenti dalla toolbar tramite
+un design pattern: State (pag 305, pattern di tipo Object Behavioral).
+
+Adesso sposto la mia attenzione verso un'altra importante novità: il pannello delle proprietà.
+Ho deciso di gestire la situazione in maniera dinamica. Ogni elemento UML ha una serie di proprietà
+Queste sono catalogate usando le classi presenti nel package org.af2_0.gui.property
+La tabella delle proprietà viene costruita in maniera dinamica dalla classe PropertyPanel
+analizzando la classe PropertyContainer che riceve. Questo è un contenitore di altri oggetti di tipo
+PropertyType. Due principali sottoclassi: PropertyString, ovvero una stringa che descrive il 
+valore della proprietà e PropertyContainer, ovvero una raccolta non omogenea di proprietà.
+
+Il principale problema e limite delle tabelle Java è che sono previste tabelle con allineamento
+per colonne e non per righe come servirebbe. Ovvero tutti gli elementi di una colonna hanno lo
+stesso visualizzatore. Questo potrebbe portarmi a decidere di superare il problema simulando
+la tabella con una griglia di JPanel.
+
+
+
+Giov 20 Marzo 2003
+Create una gerarchia degli elementi UML più consistente: alla base di tutto c'è UMLComponent.
+Da essa discendono sia UMLClass che UMLConnector. Una UML Component ha già alcuni attributi:
+	protected int x_pos,y_pos;	// object global coordinate
+	protected int width,height;
+	protected boolean selected;
+	protected List draggable_anchors;	// ogni oggetto possiede delle ancore draggabili
+	protected Color selected_color;
+	protected Color border_color;
+	protected Color text_color;
+	protected Font font;
+	protected final boolean debug = false;
+Ed ecco l'elenco dei metodi:
+	public UMLComponent(int global_x,int global_y);
+	public void paint(Graphics g);
+	public int getX();
+	public int getY();
+	public int getHeight();
+	public int getWidth();
+	public boolean isSelected();
+	public void setSelected(boolean the_selected);
+	public boolean containsPoint(int mx,int my);
+	public boolean isDraggableAnchor(int mx,int my)
+	public void dragAnchor(int start_x,int start_y, int delta_x, int delta_y);
+	public void dragObject(int delta_x, int delta_y);
+	public boolean isFloatingObject();
+
+Gli utlimi metodi in particolare li ho introdotti per unificare in concetto di Classe e di 
+Relazione nel concetto unificato di Oggetto.
+Ogni oggetto può essere in due stati: selezionato / non selezionato
+Ogni oggetto possiede un elenco (anche vuoto) di ancore. La funzione isDraggableAnchor informa 
+se il punto specificato è un ancora dell'oggetto o no. La funzione isFloatingObject informa se
+l'oggetto è spostabile in maniera indipendente sul panel o no. Le classi ad esempio lo sono, mentre
+le relazioni no, in quanto i punti iniziali e finali dipendono sempre dalle classi a cui sono
+collegate.
+Le due funzioni dragAnchor e dragObject vengono attivate in risposta ad un evento di tipo DRAG del
+mouse sul panel. dragAnchor permette di spostare una ancora all'interno dell'oggetto con risultati diversi
+a seconda del tipo di oggetto. dragObject invece permette di spostare l'oggetto nella sua interezza.
+Comodo soprattutto nel cosa di spostamenti multipli.
+
+Corretto l'errore dei segmenti che non si riuscivano ad acchiappare (era dovuta ad un errato
+calcolo dell'equazione in casi specifici)
+
+Aggiunta l'operazione di ottimizzazione. Indispensabile per non impazzire in fase di
+editing. Se tre ancore si trovano allineate quella centrale viene eliminata. Giocare un pochino
+con la soglia per aumentare o diminuire la sensibilità di questa operazione.
+
+
+Merc 19 Marzo 2003
+Realizzata la possibilità di muovere le ancore di una relazione. 
+Una relazione ha una lista di ancore "reali" e una lista "reali+fittizie".
+Quelle reali o fixed sono quelle per l'utente ha imposto una posizione. Le altre vengono
+disegnate come punti intermedi tra due fixed.
+Quando l'utente seleziona una fixed semplicemente ne cambia la posizione (e tutte le altre vengono
+ricalcolate). Se l'utente seleziona una ancora fittizia questa passa allo stato di fixed e viene
+messa nella corrispettiva lista.
+Ancora non on funziona benissimo: 
+alcuni segmenti (mi pare quelli finali) sembra non siano considerati in fase di selezione.
+
+Inoltre aggiungere procedura di ottimizzazione che controlla se l'angolo tra due segmenti consecutivi
+è lo stesso e in tal caso li fa diventare un unico segmento.
+
+Mar 18 Marzo 2003
+Sto affrontando il package org.af2_0.gui.uml e in particolare il diagramma delle classi.
+Ho già creato un LayeredPanel nel quale si possono aggiungere e muovere delle UMLClass
+Prossimo passo: UMLConnector
+
+Lun 17 Marzo 2003
+Creato il package org.af2_0.gui.project molto semplificato rispetto al precedente e con la
+gestione degli eventi provenienti dal modello. Quando si applica un pattern non è più necessario
+effettuare la doppia analisi.
+Introdotta anche la possibilità di eliminare una entità dal modello.
+
+Per quanto riguarda la gestione delle ontologie sono indeciso se lasciare un unico diagramma
+delle classi, oppure se dare la possibilità di splittare tutto su più diagrammi. Naturalmente
+la prima versione è quella più semplice da gestire e quindi probabilmente in prima analisi
+prospetterò per questa.
+
+Una versione "futuristica" potrebbe prevedere di fare una distinzione tra entità (classi, attributi e 
+operazioni) e diagrammi un pò come avviene nei CASE tool.
+
+Altra idea: eliminare del tutto la vista Project (o comunque fare in modo che sia "nascondibile)
+e lasciare spazio solo al panel centrale con le tre tab: Static, Dynamic, Ontology.
+
+La vista static dovrebbe presentare una serie di package (o classi, vedere PASSI) che
+rappresentano degli agenti. Delle relazioni tra di loro mostrano le comunicazioni. 
+Cliccando sulla comunicazione è possibile editarla. Cliccando su un punto qualunque è possibile aggiungere 
+agenti oppure applicare pattern di service (praticamente communications) o di component.
+
+Cliccando su un agente la vista dovrebbe cambiare e mostrare il diagramma delle classi 
+Agente + Task (SASD). Da questo diagramma è possibile
+1) editare agente, attributi, operazioni e task
+2) aggiungere task e/o pattern
+3) editare la task specification (anche da questa vista è possibile editare task, attributi e operazioni
+
+La vista dynamic deve presentare una versione semplificata del MABD (DEFINIRE MEGLIO)
+
+La vista ontology dovrebbe presentare (diagramma delle classi) un serie di classi di 3 tipi:
+1) Concetti
+2) Azioni
+3) Predicati
+Questi possono essere usati per definire il contenuto di una communication.
+
+Togliendo lo spazio al project la finestra delle proprietà può risultare più grande e quindi aggiungere 
+spazio anche ad un riquadro "description" come in Rational Rose.
+
+
+Dom 16 Marzo 2003
+Creato il primo tipo parametrizzato: AttributeContainer.
+Ho scelto questo nome perchè non si tratta di un semplice attributo, ma di una collezione di attributi 
+generati dinamicamente in base al valore dei parametri. Non si tratta però di una estenzione di Container in quanto
+contiene solo attributi.
+
+Questa prima prova ha messo in luce alcuni punti chiave:
+1) un attributo generato dal AttributeContainer non è un attributo del modello infatti non si registra
+come elemento statico. Quindi ci potrebbero essere due attributi con lo stesso nome.
+
+2) gli attributi non possono comunque essere modificati (ad esempio non è possibile aggiungere
+un modificatore ad uno senza aggiungerlo a tutti gli altri)
+
+Ci sono due possibilità:
+1) la situazione appena descritta
+2) si effettua un pre-processing intermedio tra il meta-pattern e il pattern model. In questa fase l'utente deve fornire 
+i parametri e quindi gli elementi vengono istanziati.
+
+
+In ogni caso bisogna definire molto più precisamente i tipi di parametro possibili, fornendo anche una sorta
+di "tipizzazione". Esempio Identifier, Number, Table ...
+
+
+Ven 14 Marzo 2003
+Iniziato il refactory delle prime classi di AgentFactory:
+1) Le entity sono state strutturate meglio e suddivise in package (structural, dynamic, ontology e action)
+2) Le entity sono già in grado di esportare codice XML (a tal proposito è stata definita l'interfaccia ExportableToXML)
+3) Tutte le classi EntityXYZ sono state rese accessibili direttamente dal Model
+4) Sono state previste delle eccezioni per operazioni tipo:
+    a) creazione di enitità già esistenti nel modello
+    b) eliminazione o modifica di entità non presenti nel modello
+5) La classe EntityMerge adesso è univoca e prevede un parametro booleano per la sovrascrittura: se è vero quando si incontra una
+entità con lo stesso nome, tutte le sue caratteristiche vengono cambiate in base a quelle della nuova entità
+6) La classe EntityEdit permette di rinominare le classi tenendo conto dei costruttori.
+
+Il prossimo passo è l'introduzione dei Tipi Parametrizzati.
+
+
+Merc 12 Marzo 2003 inzio del progetto:
+Il progetto AgentFactory 2.0 prende come spunto il suo predecessore ma presuppone 
+alcune caratteritiche di base:
+1) si pone su un livello superiore rispetto alla versione 1.x introducendo due nuove viste 
+sul progetto:
+    a) Communication View è la vista nella quale si vedono le classi degli agenti e le loro 
+    relazioni di tipo "comunicazione"; 
+    
+    Agendo direttamente su questa vista, l'utente può definire le comunicazioni
+    a cui possono partecipare gli agenti; questo genera in modo automatico l'applicazione
+    dei pattern di comunicazione necessari allo scopo.
+    
+    In tale vista deve essere inoltre possibile specificare il "servizio" messo a disposizione
+    da un agente, non specifico per un particolare target, ma per l'intera comunità. Questo "servizio"
+    per come è inteso non può essere specificato come una relazione perchè non presenta la controparte.
+    Quindi (IN FASE DI STUDIO) bisogna valutare un modo per rappresentare questo concetto graficamente.
+
+
+    b) Ontology View è la vista dell'ontologia usata dagli agenti del sistema. In sostanza si tratta
+    di un diagramma delle classi con il quale si può esprimere: Concetti, Azioni e Predicati.
+    Da questo diagramma (TESI DI SERGIO) si deve poter generare la gerarchia di classi java complete di
+    costruttori, metodi GET e SET e parser per lo scambio dei messaggi.
+
+    Nella specifica degli attributi di un agente può risultare comodo avere un controllo che verifica se
+    il tipo è definito o meno nell'ontologia. Probabilmente (IN FASE DI STUDIO) un agente può possedere come
+    attributi soltanto tipi definiti nella propria ontologia.
+
+
+    c) Task Specification è una vista in cui ogni task dell'agente è rappresentato come Attività
+    mentre l'agente è rappresentato come una swimlane. Un'altra swimlane invece è rappresentata
+    con il nome di Other agents. In questo diagramma si definiscono le relazioni tra i task di uno stesso
+    agente e tra task di agenti differenti.
+
+    Da questo diagramma (IN FASE DI STUDIO) devono potersi generare: la macchina a stati finiti rappresentata
+    dal diagramma altri pattern come i "cyclic" o gli "oneshot"
+
+2) action pattern più potenti in quanto suddivisi in: block (o contenitori), actions (ovvero operazioni 
+di base e user_defined ovvero parti introdotte dall'utente. Ogniuna di queste ha un proprio commento
+che può essere incluso o escluso nella generazione del codice.
+
+3) parametrized entity ovvero entità che dipendono da una lista di parametri. In base ai parametri specificati
+dall'utente tali entità si comportano in maniera diversa. Ogni agente ha una lista di parametri e di corrispettivi
+valori. Un parametro può appartenere a diverse categorie; ad esempio può avere un solo valore, oppure 0..n
+Un tipico parametro è agent.name con molteplicità 1. Sia l'agente che il suo costruttore sfruttano tale parametro per 
+generare correttamente il come del corrispettivo elemento java. Situazioni più complesse sono quelle relative agli attributi
+con metodi get e set.
+
+4) entità dinamiche più potenti e significative. Nella versione 1.x le relation hanno un ruolo marginale nel progetto, limitato
+in pratica alla sola visualizzazione del diagramma del comportamento. In questa nuova versione si vuole fornire un
+ruolo più importante. Si può distinguere (IN FASE DI STUDIO) tra
+    a) relazioni di comunicazione, presenti nel diagramma delle comunicazioni e task specification
+    b) relazioni di estenzione, aggregazione nel diagramma delle ontologie
+    c) relazioni di attivazione padre figlio nel diagramma task specification; questo genere di relazioni
+    dovrebbero permettere di introdurre un comportamento specifico sia nel padre che nel figlio, aggiungendo a mo di pattern
+    entità (attributi, metodi...) sia nel parent che nel child.
+
+5) dipendenze: ogni entità (classi, attributi, metodi, parametri, ontologia) può richiedere la presenza di un particolare
+modulo esterno o interno al package per funzionare correttamente. Queste dipendenze poi si tramutano in istruzioni di import
+in fase di generazione di codice. Fare (IN FASE DI STUDIO) un differenziazione tra:
+    a) import interni; che devono essere gestiti in maniera dinamica infatti se un attributo necessita di una classe dell'ontologia
+    per funzionare e l'ontologia cambia durante la progettazione se ne deve tener conto.
+    b) import esterni
+
+6) descriptions: ogni entità statica o dinamica o ontologica può avere una descrizione testuale
+
+
+

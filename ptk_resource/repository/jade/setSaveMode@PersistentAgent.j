@@ -1,0 +1,1 @@
+storyActivated = flag;

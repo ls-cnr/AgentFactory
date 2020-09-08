@@ -1,0 +1,1 @@
+//This method should be defined to execute some actions just before the current agent is reloaded from a persistent store.

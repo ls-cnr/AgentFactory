@@ -1,0 +1,1 @@
+//This method should be defined to execute some actions just after the current agent is thawed from a persistent store.

@@ -1,0 +1,2 @@
+if(killAfterAction)
+	myAgent.doDelete();

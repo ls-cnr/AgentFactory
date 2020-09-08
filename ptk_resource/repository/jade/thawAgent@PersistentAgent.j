@@ -1,0 +1,1 @@
+addBehaviour(new ThawBehaviour(this));

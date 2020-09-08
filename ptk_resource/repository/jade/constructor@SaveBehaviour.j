@@ -1,0 +1,2 @@
+super(owner);
+killAfterSave = kill;

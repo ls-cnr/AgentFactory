@@ -1,0 +1,1 @@
+// insert HERE the code to execute when the proposal is rejected

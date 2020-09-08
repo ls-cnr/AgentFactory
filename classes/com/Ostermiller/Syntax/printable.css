@@ -1,0 +1,23 @@
+body {
+  background-color:white;
+  color:black;
+  font-family:"Times New Roman",Times,serif;
+}
+a:link {
+  color:black;
+  text-decoration:none;
+}
+a:visited {
+  color:black;
+  text-decoration:none;
+}
+.sidebar {
+  display:none;
+}
+a.mail {
+  font-style:italic;
+}
+.currentpage {
+  text-decoration:underline;
+  font-weight:bold;
+}

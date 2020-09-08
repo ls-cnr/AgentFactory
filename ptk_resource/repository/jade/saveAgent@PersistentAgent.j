@@ -1,0 +1,1 @@
+addBehaviour(new SaveBehaviour(this));

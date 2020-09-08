@@ -1,0 +1,155 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="description" content="Java libraries for syntax highlighting Java, C, or HTML source code with an implementation to make colored html documents and an demonstration editor.">
+   <meta name="keywords" content="syntax, syntax, syntax, highlight, highlight, highlight, color, color, color, highlighting, highlighting, highlighting, java, c, html, library, libraries, gpl, open source, freeware, free, free-ware, free ware">
+   <title>Syntax Highlighting</title>
+	<base href="http://ostermiller.org/syntax/">
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<h1>Syntax Highlighting</h1>
+<img border="0" src="syntax.gif" alt="Syntax Highlighting" height="62" width="175" align="left">
+The com.Ostermiller.Syntax package is designed to add syntax coloring to 
+web pages that display source code or to add color syntax highlighting ability to any 
+text editor written in java.
+<br clear=all>
+<hr>
+
+<h2>Download</h2>
+<p>Get the <a href="syntax.jar">latest version</a> of the com.Ostermiller.Syntax package in jar format.  (Includes source code - 351k)</p>
+<p>Browse the <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/Ostermiller/Syntax">source code</a> or view the <a href="doc/">documentation.</a></p>
+
+<hr>
+
+<h2>Features</h2>
+
+<ul>
+<li>Supports java, c, html, and java properties. (More can be added with relative ease)</li>
+<li>True lexer support - language syntax specified using <a href="http://jflex.de/">JFlex</a>.</li>
+<li>Language specification compliant:
+  <ul>
+  <li>C/C++ (<a href="TestCases.c.html">Test Case</a>)
+    <ul>
+    <li>Keywords</li>
+    <li>Precompiler statements (even those with comments)</li>
+    <li>Comments</li>
+    <li>Literals
+    <ul>
+      <li>Integers, Floats, and Doubles</li>      
+      <li>Characters and Strings (with escape sequences)</li>
+    </ul>
+    </li>
+    <li>Identifiers</li>
+    <li>Operands</li>
+    <li>Trigraph escape sequence support</li>
+    <li>Error reporting</li>
+    </ul>
+  </li>
+  <li>Java (<a href="TestCases.java.html">Test Case</a>)
+    <ul>
+    <li>Keywords</li>
+    <li>Comments (including documentation comments)</li>
+    <li>Literals
+    <ul>
+      <li>Integers, Floats and Doubles (with bounds checking)</li>      
+      <li>Characters and Strings (with escape sequences including unicode)</li>
+      <li>true, false, and null</li>
+    </ul>
+    </li>
+    <li>Identifiers</li>
+    <li>Operands</li>
+    <li>Error reporting</li>
+    </ul>
+  </li>
+  <li>HTML (<a href="TestCases.html.simple.html">Simple Test Case</a>)
+    <ul>
+    <li>Text</li>
+    <li>Character entity references</li>
+    <li>Comments</li>   
+    <li>Scripts</li> 
+    <li>Tags</li>
+    <li>Error reporting</li>
+    </ul>
+  </li>
+  <li>HTML (<a href="TestCases.html.complex.html">Complex Test Case</a>)
+    <ul>
+    <li>Text</li>
+    <li>Character entity references</li>
+    <li>Comments</li> 
+    <li>Scripts</li>    
+    <li>Tag parts</li>
+    <li>Name/value pairs</li>
+    <li>Error reporting</li>
+    </ul>
+  </li>
+  <li>Java Properties (<a href="TestCases.properties.html">Test Case</a>)
+    <ul>
+    <li>Name/value pairs</li>
+    <li>Values split across multiple lines.</li>
+    <li>Comments</li> 
+    </ul>
+  </li>
+  </ul>
+</li>
+</ul>
+
+<hr>
+
+<h2>Examples</h2>
+<h3>ToHTML</h3>
+<p>Ability to make syntax highlighted html from sourcefiles.</p>
+<p>To run, use the command line:<br>
+<b>java -classpath syntax.jar com.Ostermiller.Syntax.ToHTML --help</b><br>
+<div style='border: black inset;padding:.2cm;'>
+<pre>ToHTML [-mlTitsofr] &lt;files&gt;
+Converts source files to syntax colored HTML.
+If no files are specified standard input will be used.
+ --help               Print this help message.
+ --version            Print out the version number.
+ --about              Print out license and contact info.
+ -m --mime &lt;type&gt;     Input is the given mime type. text/html, text/x-java...
+ -l --lexer &lt;class&gt;   Java class name of the lexer to use.
+ -T --title &lt;title&gt;   Use the given title in the html page.
+ -i --ignore &lt;class&gt;  CSS class name of token to ignore, eg. "whitespace"
+ -t --template &lt;URL&gt;  BTE template to use.  see: <a href="http://ostermiller.org/bte/">ostermiller.org/bte</a>
+ -s --css &lt;URL&gt;       Cascading Style Sheet to which html should be linked.
+ -o --output &lt;file&gt;   Output file, output directory, or -- for standard output.
+ -f --force           Overwrite files without prompting.
+ -r --trans &lt;old=new&gt; translate a CSS style into another style.</pre>
+ </div>
+<p>The resulting html documents will generally be much smaller if the <b>-i&nbsp;whitespace</b> option
+is used.   BTE template files are used to customize the output.</p>
+<p>The BTE system is a separate 
+download.  It must just be placed in the classpath.  The -t option can then be used to specify
+a desired template such as the <a href="page.bte">default template</a>.  Using templates you can easily customize the look
+and feel of the generated html and add your own content.</p>
+
+<h3>Programmer's Editor Demonstration</h3>
+<p>A very simple text editor that correctly and efficiently colors the source code.
+See the <a href="editor.html">tutorial</a> on incorporating syntax highlighting into a text editor.</p>
+<p>To run, double click syntax.jar or try one of these command lines:<br>
+<b>java -jar syntax.jar</b><br>
+<b>java -classpath syntax.jar com.Ostermiller.Syntax.ProgrammerEditorDemo</b></p>
+
+<p>Due to a <a href="http//forums.java.sun.com/thread.jsp?forum=57&thread=121775">bug in Java 1.2</a> 
+that does not set the background and foreground colors of a JTextPane correctly, Java 1.3 or later 
+is recommended unless you remove calls to <code>.setBackground(Color.white)</code> and recompile. 
+(Thanks to Collin Lee for pointing this out.)</p>
+
+<hr>
+
+<h2>License</h2>
+<p>Copyright (c) 1999-2002 by <a href="mailto:Syntax@Ostermiller.com">Stephen Ostermiller</a>
+(Syntax@Ostermiller.com)</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published
+by the Free Software Foundation; either version 2 of the License or (at
+your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the
+<a href="http://www.gnu.org">GNU
+General Public License</a> for more details.</p></body>
+</html>

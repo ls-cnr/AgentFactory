@@ -1,0 +1,191 @@
+
+"try {DeleteAgent deleteAct = new DeleteAgent();deleteAct.setAgent(myAgent.getAID());deleteAct.setRepository(jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY);ContainerID where = new ContainerID(myAgent.getContainerController().getContainerName() , null);deleteAct.setWhere(where);Action a = new Action();a.setActor(getAMS());a.setAction(deleteAct);ACLMessage requestMsg = getRequest();requestMsg.setOntology(PersistenceVocabulary.NAME);getContentManager().fillContent(requestMsg, a);addBehaviour(new MyAMSClientBehaviour(myAgent,""DeleteAgent"", requestMsg));}catch (Exception fe) {fe.printStackTrace();}"
+"try {								ContainerID where = new ContainerID(myAgent.getContainerController().getContainerName() , null);								PersistenceHelper helper = (PersistenceHelper) myAgent.getHelper(PersistenceHelper.NAME);								helper.freeze(null,where);							}							catch (Exception e) {								e.printStackTrace();							}"
+"try{	LoadAgent loadAct = new LoadAgent();	loadAct.setAgent(new AID(targetAgent,AID.ISLOCALNAME));	loadAct.setRepository(jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY);	ContainerID where = new ContainerID(myAgent.getContainerController().getContainerName() , null);	loadAct.setWhere(where);	Action a = new Action();	a.setActor(getAMS());	a.setAction(loadAct);	ACLMessage requestMsg = getRequest();	requestMsg.setOntology(PersistenceVocabulary.NAME);	getContentManager().fillContent(requestMsg, a);	addBehaviour(new MyAMSClientBehaviour(myAgent,""LoadAgent"", requestMsg,killAfterLoad));}catch (Exception fe) {	fe.printStackTrace();}"
+"java.text.SimpleDateFormat sfd = new java.text.SimpleDateFormat(""ddMMyyyy"");java.text.SimpleDateFormat hourFormatter = new java.text.SimpleDateFormat(""HH:mm:ss"");cloneName = myAgent.getLocalName() + ""_"" + sfd.format(new java.util.Date()) 			+ ""_"" + hourFormatter.format(new java.util.Date());myAgent.doClone(myAgent.here(),cloneName);"
+"String parentName = myAgent.getLocalName().split(""_"")[0];myAgent.doClone(myAgent.here(),parentName);myAgent.addBehaviour(killer);"
+"	try{	PersistenceHelper helper = (PersistenceHelper)myAgent.getHelper(PersistenceHelper.NAME);	helper.reload(null);			}			catch(jade.core.ServiceException e){				e.printStackTrace();			}"
+"try{	PersistenceHelper helper = (PersistenceHelper)myAgent.getHelper(PersistenceHelper.NAME);				helper.save(null);}			catch(jade.core.ServiceException e){				e.printStackTrace();}"
+"try{	PersistenceHelper helper = (PersistenceHelper)myAgent.getHelper(PersistenceHelper.NAME);	helper.save(null);	if(killAfterSave)		myAgent.addBehaviour(killer);}catch(jade.core.ServiceException e){	e.printStackTrace();}"
+"try {ThawAgent thawAct = new ThawAgent();thawAct.setAgent(myAgent.getAID());thawAct.setRepository(jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY);ContainerID where = new ContainerID(myAgent.getContainerController().getContainerName() , null);thawAct.setNewContainer(where);Action a = new Action();a.setActor(getAMS());a.setAction(thawAct);ACLMessage requestMsg = getRequest();requestMsg.setOntology(PersistenceVocabulary.NAME);getContentManager().fillContent(requestMsg, a);addBehaviour(new MyAMSClientBehaviour(myAgent,""ThawAgent"", requestMsg));}catch (Exception fe) {fe.printStackTrace();}"
+"if (!agents.contains(agent_ref))			agents.add(agent_ref);"
+"removeBehaviour(killer);if(cloneForPersistence)	addBehaviour(new SaveBehaviour(this,true));else{	init();	persistentAfterClone();}"
+"if(cloneForPersistence){	removeBehaviour(killer);	SequentialBehaviour seq = new SequentialBehaviour();	seq.addSubBehaviour(new WaitingForParentDead(this));	seq.addSubBehaviour(new PersistenceCloneToParent(this));	addBehaviour(seq);}init();persistentAfterLoad();"
+"init();persistentAfterLoad();"
+
+"init();persistentAfterThaw();"
+"register_to_df();        setupAStar();"
+"QUERYListener myQUERYListener =			new QUERYListener(this, new AID(DATABASE_AGENT, false));		addBehaviour(myQUERYListener);		INSERTListener myINSERTListener = new INSERTListener(this);		addBehaviour(myINSERTListener);"
+register_to_df();
+"register_to_df();		MessageTemplate mt = AchieveREResponder.createMessageTemplate(FIPAProtocolNames.FIPA_REQUEST);		AchieveREResponder listener = new Listener(this, mt);		addBehaviour(listener);		addBehaviour( new PrepareResource(this) );"
+"register_to_df( );		addBehaviour( new Listener(this) );		addBehaviour( new PrepareResource(this) );"
+"Iterator iter = responses.iterator();			while (iter.hasNext()) {				ACLMessage element = (ACLMessage) iter.next();				if (element.getPerformative() == ACLMessage.PROPOSE) {					ACLMessage reply = element.createReply();					// Insert HERE the code to accept or to reject the proposal					// for the participant agent in the conversation					// Use sendX to select the reply performative					acceptances.add(reply);				}			}"
+"// This method is called when the first response (Agree, Refuse, Not-Understood)			// is received or when the timeout is expired.			// This method is called after the handleAgree, handleRefuse or handleNotUnderstood			// Insert user code here"
+"// This method is called when the first response (Agree, Refuse, Not-Understood)			// is received or when the timeout is expired.			// This method is called after the handleAgree, handleRefuse or handleNotUnderstood			// Insert user code here"
+"Iterator iter = allResultNotifications.iterator();			while (iter.hasNext()) {				ACLMessage element = (ACLMessage) iter.next();				if (element.getPerformative() == ACLMessage.INFORM) {					// Insert HERE the code for the behaviour on INFORM				} else {					// Insert HERE the code for the behaviour on FAILURE				}			}"
+"// This method is called when the second response (Inform, Failure)			// is received or when the timeout is expired.			// This method is called after the handleInform or handleFailuer			// Insert user code here"
+"// This method is called when the second response (Inform, Failure)			// is received or when the timeout is expired.			// This method is called after the handleInform or handleFailuer			// Insert user code here"
+//This method should be defined to execute some actions just before the current agent is frozen to a persistent store.
+//This method should be defined to execute some actions just before the current agent is reloaded from a persistent store.
+//This method should be defined to execute some actions just before the current agent is saved to a persistent store.
+"super(owner,request);actionName=action;"
+parent = null;
+"super(owner, new ACLMessage(ACLMessage.NOT_UNDERSTOOD));			this.participant_agents = participant_agents;"
+"super(				owner,				ContractNetResponder.createMessageTemplate(					jade						.domain						.FIPANames						.InteractionProtocol						.FIPA_CONTRACT_NET));"
+"super(owner, new ACLMessage(ACLMessage.NOT_UNDERSTOOD) );			agent_to_query = id;			query_content = content;"
+"super(owner, AchieveREResponder.createMessageTemplate(FIPAProtocolNames.FIPA_QUERY));"
+"super(owner, new ACLMessage(ACLMessage.NOT_UNDERSTOOD) );			agent_to_request = id;			request_content = content;"
+"super(owner, AchieveREResponder.createMessageTemplate(FIPAProtocolNames.FIPA_REQUEST));"
+// insert HERE the agent inizializations
+"Calendar today = Calendar.getInstance();    	BasicConfigurator.configure();    	    	logger.setLevel(log_level);    	logger.info(AGENT_NAME+"" born at ""+today.getTime().toString());"
+"super(owner);			inform_receiver = the_receiver;			content = the_content;"
+"super(agent_ref);			MessageTemplate m1 = MessageTemplate.MatchPerformative(ACLMessage.INFORM);			MessageTemplate m2 = MessageTemplate.MatchProtocol(""inform-protocol"");						setMessageTemplate( MessageTemplate.and(m1,m2) );"
+"super(owner);targetAgent = agent;killAfterLoad = kill;"
+"super(owner,request);actionName = action;killAfterAction = kill;"
+"preparing_data = false;		sending_data = false;"
+// insert HERE the agent inizializations
+"super(owner);killAfterSave = kill;"
+agents = new LinkedList();
+super(owner);
+"super(owner,10);descr.setName(new AID(myAgent.getLocalName().split(""_"")[0],AID.ISLOCALNAME));descr.setState(jade.domain.FIPAAgentManagement.AMSAgentDescription.ACTIVE);"
+"super(a);			this.destination_container = destination_container;"
+"super(owner,mt);			registerPrepareResultNotification( new SendResource(myAgent,this));"
+"send_resource = new SendResource(owner);			MessageTemplate template = AchieveREResponder.createMessageTemplate(FIPAProtocolNames.FIPA_REQUEST);						super(owner, template );			registerPrepareResultNotification( send_resource);"
+"super(owner, AchieveREResponder.createMessageTemplate(FIPAProtocolNames.FIPA_REQUEST));			registerPrepareResultNotification( new PrepareResource(myAgent,this));"
+"super(owner); 			parent = my_parent;"
+"super(owner, new ACLMessage(ACLMessage.NOT_UNDERSTOOD));			agent_to_request = id;			request_content = content;			this.parent = parent;"
+"super(owner);			parent=my_parent;"
+"super(owner);			inform_receiver = the_receiver;			content = the_content;			parent = my_parent;			instances++;"
+"super(a);			this.destination = destination;"
+"super(owner);			this.content = content;"
+"double cost = -1;			Iterator arcs = graph.getArcs().iterator();			while (arcs.hasNext()) {				AStarArc a = (AStarArc) arcs.next();				if (a.getStart()==A && a.getEnd()==B || a.getStart()==B && a.getEnd()==A)					cost = a.getWeight();			}			return cost;"
+"try {//Story mode	if(storyActivated){		List savedSnapshots = getSavedSnapshots();		DeleteAgent deleteAct = new DeleteAgent();		deleteAct.setRepository(jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY);		ContainerID where = new ContainerID(getContainerController().getContainerName() , null);		deleteAct.setWhere(where);		Action a = new Action();		a.setActor(getAMS());				for(int i = 0; i < savedSnapshots.size(); i++){			deleteAct.setAgent(new AID((String)savedSnapshots.get(i),AID.ISLOCALNAME));			a.setAction(deleteAct);			ACLMessage requestMsg = getRequest();			requestMsg.setOntology(PersistenceVocabulary.NAME);			getContentManager().fillContent(requestMsg, a);			addBehaviour(new MyAMSClientBehaviour(this,""DeleteAgent"", requestMsg,false));		}	}	else{//Normal mode		DeleteAgent deleteAct = new DeleteAgent();		deleteAct.setRepository(jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY);		ContainerID where = new ContainerID(getContainerController().getContainerName() , null);		deleteAct.setWhere(where);		Action a = new Action();		a.setActor(getAMS());		deleteAct.setAgent(getAID());		a.setAction(deleteAct);		ACLMessage requestMsg = getRequest();		requestMsg.setOntology(PersistenceVocabulary.NAME);		getContentManager().fillContent(requestMsg, a);		addBehaviour(new MyAMSClientBehaviour(this,""DeleteAgent"", requestMsg,false));	}}catch (Exception fe) {	fe.printStackTrace();}"
+addBehaviour(new DeleteBehaviour(this));
+return true;
+return finished;
+"ListNode current;			List successor_list;			boolean terminated = false;			opened.clear();			closed.clear();						ListNode node = new ListNode(starting_state);			node.setRealCost(0);			node.setEstimateCost( heuristic(starting_state,ending_state) );			opened.add(node);						do {				current = getBestCostNode(opened);								if (current == null)					terminated = true;		// NON CI SONO PIU' NODI - FALLIMENTO				else {					opened.remove(current);					closed.add(current);									if (current.getNode() == ending_state) {						terminated = true;	// RAGGIUNTO LO STATO FINALE - SUCCESSO					}				}									if (!terminated) {				    successor_list = neighboringNodes(current.getNode());					Iterator it = successor_list.iterator();				    while (it.hasNext()) {				    	AStarNode successor = (AStarNode) it.next();				    	double arc_cost = costAmong(current.getNode(),successor);				    	double stimate = heuristic(successor,ending_state);				    	double cost = current.getRealCost() + arc_cost + stimate;				    					    	ListNode succInOpened = isInList(opened,successor);				    	ListNode succInClosed = isInList(closed,successor);				    					    	// IL SUCCESSORE SI TROVA NELLA LISTA APERTA				    	if (succInOpened != null) {				    		if (cost > succInOpened.getCost()) {				    			opened.remove(succInOpened);								closed.add(succInOpened);																succInOpened.setRealCost(current.getRealCost() + arc_cost);								succInOpened.setEstimateCost(stimate);				    		}					    							    // IL SUCCESSORE SI TROVA NELLA LISTA CHIUSA				    	} else if (succInClosed != null){				    		if (cost <= succInClosed.getCost() ) {				    			closed.remove(succInClosed);				    			opened.add(succInClosed);				    							    			succInClosed.setRealCost(current.getRealCost() + arc_cost);				    			succInClosed.setEstimateCost(stimate);				    		}					    						    						    // IL SUCCESSORE NON SI TROVA NELLE DUE LISTE				    	} else {				    		ListNode succ_node = new ListNode(successor);				    		opened.add(succ_node);				    						    		succ_node.setRealCost(current.getRealCost() + arc_cost);				    		succ_node.setEstimateCost(heuristic(successor,ending_state));				    	}					}								}			} while (terminated != true);"
+addBehaviour(new FreezeBehaviour(this));
+"ListNode min_cost_node = null;			Iterator it = list.iterator();			while (it.hasNext()) {				ListNode node = (ListNode) it.next();				if (min_cost_node==null || node.getCost() < min_cost_node.getCost())					min_cost_node = node;								}			return min_cost_node;"
+return data;
+"String day = date.substring(0,2);return(Integer.parseInt(day));"
+"String hours = date.split("":"")[0];return(Integer.parseInt(hours));"
+"String mins = date.split("":"")[1];return(Integer.parseInt(mins));"
+"String mounth = date.substring(2,4);return(Integer.parseInt(mounth));"
+"	ACLMessage AMSRequest = new ACLMessage(ACLMessage.REQUEST);	AMSRequest.setSender(myAgent.getAID());AMSRequest.clearAllReceiver();AMSRequest.addReceiver(myAgent.getAMS());AMSRequest.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);AMSRequest.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);return(AMSRequest);"
+"ACLMessage AMSRequest = new ACLMessage(ACLMessage.REQUEST);AMSRequest.setSender(getAID());AMSRequest.clearAllReceiver();AMSRequest.addReceiver(getAMS());AMSRequest.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);AMSRequest.setLanguage(FIPANames.ContentLanguage.FIPA_SL0);return(AMSRequest);"
+return request_content;
+"try{	PersistenceHelper helper = (PersistenceHelper)getHelper(PersistenceHelper.NAME);	return(helper.getSavedAgents(getContainerController().getContainerName(),jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY));}catch(jade.core.ServiceException e){	e.printStackTrace();}catch(jade.core.IMTPException e){	e.printStackTrace();}catch(jade.core.NotFoundException e){	e.printStackTrace();}catch(Exception e){	e.printStackTrace();}return(null);"
+"List istances = new LinkedList();String[] savedAgents = getSavedAgents();if((savedAgents != null) && (savedAgents.length > 0)){	String mySelf = getLocalName();	for(int i = 0; i < savedAgents.length; i++)		if(savedAgents[i].startsWith(mySelf + ""_""))			istances.add((savedAgents[i].split(""@""))[0]);}return(istances);"
+return(storyActivated);
+"String sec = date.split("":"")[2];return(Integer.parseInt(sec));"
+"String year = date.substring(4);return(Integer.parseInt(year));"
+"// This method is called every time an agree message is received from //AMS. Inser user code herede"
+"// This method is called every time an agree message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time an agree message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"ACLMessage msg = (ACLMessage) allResultNotifications.get(0);			getDataStore().put(parent.RESULT_NOTIFICATION_KEY, msg);"
+"// This method is called every time a failure message is received from //AMS. Inser user code here"
+"// This method is called every time a failure message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a failure message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a failure message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time an inform message is received from //AMS. Inser user code here"
+"// This method is called every time a inform message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a inform message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a inform message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+// Insert user code here
+"if(killAfterAction)	myAgent.doDelete();"
+"// This method is called every time a not-understood message is received from //AMS. Inser user code here"
+"// This method is called every time a not-understood message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a not-understood message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a not-understood message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a not-understood message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a message is received,			// which is out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a message is received,			// which is out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a message is received,			// which is out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a propose message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+NOT EXISTS
+NOT EXISTS
+"// This method is called every time a refuse message is received from //AMS. Inser user code herecode"
+"// This method is called every time a refuse message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a refuse message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+"// This method is called every time a refuse message is received,			// which is not out-of-sequence according to the protocol rules.			// Insert user code here"
+// insert HERE the code to execute when the proposal is rejected
+return 1;
+"// Register the supported ontologiesgetContentManager().registerOntology(PersistenceOntology.getInstance());        // register the supported languages		getContentManager().registerLanguage(new SLCodec(), FIPANames.ContentLanguage.FIPA_SL0);				try{			PersistenceHelper helper = (PersistenceHelper) getHelper(PersistenceHelper.NAME);			helper.registerSavable(this);		}		catch(jade.core.ServiceException e){			e.printStackTrace();		}"
+"super(myAgent);						opened = new LinkedList();			closed = new LinkedList();"
+"ListNode found = null;			Iterator it = list.iterator();			while (it.hasNext()) {				ListNode node = (ListNode) it.next();				if (node.getNode()==A)					found = node;			}			return null;"
+return null;
+// this method is overried by PrepareResource
+cloneForPersistence = true;
+cloneForPersistence = false;
+"try{	if((jade.domain.AMSService.search(myAgent,descr)).length == 0)    	stop();}catch(Exception e){	e.printStackTrace();}"
+"	//This method is invoked just after the generic agent	//afterClone(). Users must use this method the same way ordinary	//agents use their afterClone() method."
+//This method should be defined to execute some actions just after the current agent is loaded from a persistent store.
+//This method should be defined to execute some actions just after the current agent is thawed from a persistent store.
+//Use this method the same way ordinary agents use their setup() method
+"cfp.setSender(myAgent.getAID());			cfp.setProtocol(				jade.domain.FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);			cfp.setPerformative(ACLMessage.CFP);			Iterator it = participant_agents.iterator();			while (it.hasNext()) {				AID aid = (AID) it.next();				cfp.addReceiver(aid);			}			Vector l = new Vector();			l.addElement(cfp);			return l;"
+"// This method must return the vector of ACLMessage objects to be sent.			// It is called in the first state of this protocol.			// This default implementation just returns the ACLMessage object passed in the constructor.			msg.setPerformative(ACLMessage.INFORM);			msg.setProtocol(""inform-protocol"");			msg.setSender(myAgent.getAID());			msg.addReceiver(inform_receiver);			msg.setContent(content);"
+"// This method must return the vector of ACLMessage objects to be sent.			// It is called in the first state of this protocol.			// This default implementation just returns the ACLMessage object passed in the constructor.			msg.setPerformative(ACLMessage.QUERY);			msg.setProtocol(FIPANames.InteractionProtocol.FIPA_QUERY);			msg.setSender(myAgent.getAID());			msg.addReceiver(agent_to_query);			msg.setContent(query_content);						Vector l = new Vector();			l.addElement(msg);						return l;"
+"// This method must return the vector of ACLMessage objects to be sent.			// It is called in the first state of this protocol.			// This default implementation just returns the ACLMessage object passed in the constructor.			msg.setPerformative(ACLMessage.REQUEST);			msg.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);			msg.setSender(myAgent.getAID());			msg.addReceiver(agent_to_request);			msg.setContent(request_content);						Vector l = new Vector();			l.addElement(msg);						return l;"
+"ACLMessage response = request.createReply();			// insert HERE the code for send a performative to reply to the cfp			// use sendRefuse or sendPropose methods				return response;"
+"// This method is called when the initiator's message is received that matches the message template passed in the constructor.			// The request parameter is the received message			ACLMessage response = request.createReply();			// Insert reply user code HERE (use sendX method to determine the performative act, complete the message with a content if needed) 			return response;"
+"// This method is called when the initiator's message is received that matches the message template passed in the constructor.			// The request parameter is the received message			ACLMessage response = request.createReply();			// Insert reply user code HERE (use sendX method to determine the performative act, complete the message with a content if needed) 			return response;"
+"ACLMessage response = request.createReply();			sendAgree(response);			sending_data = true;			return response;"
+"// This method is called when the initiator's message is received that matches the message template passed in the constructor.			// The request parameter is the received message			// Insert reply user code here (use sendX method to determine the performative act, complete the message with a content if needed)						ACLMessage response = request.createReply();			sendAgree(response);			return response;"
+"// This method is called when the initiator's message is received that matches the message template passed in the constructor.			// The request parameter is the received message			ACLMessage response = request.createReply();						if (request.getContent().equals(""subscribe"")) {				addAgent(response.getSender());				sendAgree(response);			} else if (request.getContent().equals(""unsubscribe"")) {				removeAgent(response.getSender());				sendAgree(response);			} else {				sendNotUnderstood(response);			}						return response;"
+"ACLMessage response = request.createReply();			query_database.setRequestContent(request.getContent());"
+"// use sendX to reply to the request			return response;"
+"// This method is called after the response has been sent and only if the response was an agree message. 			ACLMessage reply = request.createReply();			// Insert reply user code HERE (use sendX method to determine the performative act, complete the message with a content if needed) 			return reply;"
+"// This method is called after the response has been sent and only if the response was an agree message. 			ACLMessage reply = request.createReply();			// Insert reply user code HERE (use sendX method to determine the performative act, complete the message with a content if needed) 			return reply;"
+"// This method is called after the response has been sent and only if the response was an agree message. 			ACLMessage reply = request.createReply();			sendInform(reply);			reply.setContent( getData() );			return reply;"
+"// This method is called after the response has been sent and only if the response was an agree message.			ACLMessage reply = request.createReply();			sendAgree( reply );			return reply;"
+"ACLMessage reply = request.createReply();			// Insert reply user code HERE (use sendX method to determine the performative act, complete the message with a content if needed)			UpdateCache myUpdateCache =				new UpdateCache(myAgent, request.getContent());			reply.setPerformative(ACLMessage.INFORM);			return reply;"
+"super(				owner,				AchieveREResponder.createMessageTemplate(					FIPANames.InteractionProtocol.FIPA_REQUEST));			query_database = new QueryDatabase(myAgent, id_database, """", this);			registerPrepareResultNotification(query_database);"
+NOT EXISTS
+"/* this block enable DF registration */		try {			// create the agent description of itself			DFAgentDescription dfd = new DFAgentDescription();			dfd.setName(getAID());						// register the description with the DF			DFService.register(this, dfd);					} catch (FIPAException e) {			e.printStackTrace();		}"
+"if(storyActivated){//Reload last saved istance in story mode	List savedSnapshots = getSavedSnapshots();    if(savedSnapshots.size() > 0){    	String name = (String)savedSnapshots.get(0);    	String date = ((String)savedSnapshots.get(0)).split(""_"")[1];    	String time = ((String)savedSnapshots.get(0)).split(""_"")[2];    	java.util.GregorianCalendar lastSnapshot =     		new java.util.GregorianCalendar(    			MyDate.getYear(date),    			MyDate.getMounth(date)-1,    			MyDate.getDay(date),    			MyDate.getHours(time),    			MyDate.getMins(time),    			MyDate.getSec(time)    		);    												    	for(int i = 1; i < savedSnapshots.size(); i++){    		date = ((String)savedSnapshots.get(i)).split(""_"")[1];    		time = ((String)savedSnapshots.get(i)).split(""_"")[2];    		java.util.GregorianCalendar snapshot = 	    		new java.util.GregorianCalendar(	    			MyDate.getYear(date),	    			MyDate.getMounth(date)-1,	    			MyDate.getDay(date),	    			MyDate.getHours(time),	    			MyDate.getMins(time),	    			MyDate.getSec(time)	    		);    		if(lastSnapshot.before(snapshot)){    			lastSnapshot = snapshot;    			name = (String)savedSnapshots.get(i);    		}    	}    	reloadSnapshot(name);    }    else    	System.out.println(""--- Agent <"" + getName() 		       		+ ""> is not saved in <""					+ jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY					+ ""> repository - can't reload"" + "" ---""		);}else{//Reload in normalMode	boolean find = false;	String[] savedAgents = getSavedAgents();	if((savedAgents != null) && (savedAgents.length > 0)){		String mySelf = getName();		int i = 0;		while((i < savedAgents.length) && (!find)){			if(mySelf.equals(savedAgents[i]))				find = true;			i++;		}	}  		if(find)   		addBehaviour(new ReloadBehaviour(this));   	else   		System.out.println(""--- Agent <"" + getName() 		       		+ ""> is not saved in <""					+ jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY					+ ""> repository - can't reload"" + "" ---""		);}"
+addBehaviour(new ReloadBehaviour(this));
+"if(getSavedSnapshots().contains(snapshotName))	addBehaviour(new LoadBehaviour(this,snapshotName,true));else   	System.out.println(""--- Agent <"" + snapshotName 			+ ""> is not saved in <""			+ jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY			+ ""> repository - can't reload"" + "" ---""	);"
+"if (agents.contains(agent_ref))			agents.remove(agent_ref);"
+"//Story save modeif(storyActivated){    SequentialBehaviour seq = new SequentialBehaviour();    seq.addSubBehaviour(new PersistenceCloneMySelf(this));    seq.addSubBehaviour(new WakerBehaviour(this,300){    	public void onWake(){    		cloneForPersistence = false;    	}    });    		    addBehaviour(seq);}else//Normal save mode	addBehaviour(new SaveBehaviour(this,false));"
+addBehaviour(new SaveBehaviour(this));
+"// This method can be used to prepare the msg to reply with an 			// ACCEPT_PROPOSAL performative act			msg.setPerformative(ACLMessage.ACCEPT_PROPOSAL);"
+"// This method can be used to prepare the msg to reply with an Agree performative act			msg.setPerformative(ACLMessage.AGREE);"
+"// This method can be used to prepare the msg to reply with an Agree performative act			msg.setPerformative(ACLMessage.AGREE);"
+"// This method can be used to prepare the msg to reply with an Inform performative act			msg.setPerformative(ACLMessage.INFORM);"
+"// This method can be used to prepare the msg to reply with an Inform performative act			msg.setPerformative(ACLMessage.INFORM);"
+"// This method can be used to prepare the msg to reply with an NotUnderstood performative act			msg.setPerformative(ACLMessage.NOT_UNDERSTOOD);"
+"// This method can be used to prepare the msg to reply with an NotUnderstood performative act			msg.setPerformative(ACLMessage.NOT_UNDERSTOOD);"
+"// This method can be used to prepare the msg to reply 			// with an PROPOSE performative act			msg.setPerformative(ACLMessage.PROPOSE);"
+"// This method can be used to prepare the msg to reply 			// with an REFUSE performative act			msg.setPerformative(ACLMessage.REFUSE);"
+"// This method can be used to prepare the msg to reply with an Refuse performative act			msg.setPerformative(ACLMessage.REFUSE);"
+"// This method can be used to prepare the msg to reply with an Refuse performative act			msg.setPerformative(ACLMessage.REFUSE);"
+"// This method can be used to prepare the msg to reply 			// with an REJECT_PROPOSAL performative act			msg.setPerformative(ACLMessage.REJECT_PROPOSAL);"
+data = a_data;
+// Use this method to set optional message template fileds
+// Use this method to set optional message template fileds
+template = temp;
+request_content = string;
+storyActivated = flag;
+"Behaviour b;		b = new ExplorerEngager(this);		addBehaviour(b);"
+"String destination=null;		Object[] agentArg = getArguments();		if(agentArg != null || agentArg.length != 0){			destination=(String)agentArg[0];			parent=(AID)agentArg[1];		}				Behaviour b;		b = new TeleportBehaviour(this,destination);		addBehaviour(b);"
+NOT EXISTS
+"ACLMessage msg = new ACLMessage(ACLMessage.NOT_UNDERSTOOD) ;			prepareInform(msg);			myAgent.send( msg );"
+"ACLMessage msg = myAgent.receive(template);			if (msg != null)				handleInform( msg );"
+"init();killer = new OneShotBehaviour(this) {    public void action() {    	doDelete();    };};persistentSetup();"
+"init();persistentSetup();"
+addBehaviour( new Listener(this) );
+"try {   				Object[] args = new Object[2];				args[0]=new String(destination_container);				args[1]=myAgent.getAID();								AgentContainer myContainer =myAgent.getContainerController();								AgentController agente01 = myContainer.createNewAgent(""SendAgent"", ""AgenteLanciato"", args);				agente01.start();			} catch (Exception n) {				n.printStackTrace();			}"
+NOT EXISTS
+"if (sending_data==false) {				preparing_data = true;				// HERE prepare the da				preparing_data = false;			}"
+"if (sending_data==false) {				myAgent.prepare_data = true;								// HERE prepare the data				myAgent.prepare_data = false;			}"
+"// HERE insert the code for prepare data                			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);                		msg.setContent( getData() );                		getDataStore().put(parent.RESULT_NOTIFICATION_KEY, msg );"
+"// HERE insert code for data producing						block(1000);			Iterator it = agents.iterator();			while(it.hasNext()) {				AID receiver = (AID) it.next();				addBehaviour( new SendResource(myAgent,receiver,getData(),this) );			}"
+"if (preparing_data==false) {				ACLMessage msg = new ACLMessage(ACLMessage.INFORM);				msg.setContent( getData() );				getDataStore().put(parent.RESULT_NOTIFICATION_KEY, msg );				sending_data = false;			}"
+"if (preparing_data==false) {				myAgent.sending_data = true;								getDataStore().put( jade.proto.AchieveREInitiator.ALL_RESULT_NOTIFICATIONS_KEY, myAgent.getData() );								myAgent.sending_data = false;				finish	= true;			}"
+"ACLMessage msg = new ACLMessage(ACLMessage.NOT_UNDERSTOOD) ;			prepareInform(msg);			myAgent.send( msg );			instances--;			if (instances == 0)				parent.restart();"
+"try {				Location dest = new jade.core.ContainerID(destination, null);				myAgent.doMove(dest);			} catch (Exception n) {				n.printStackTrace();			}"
+"graph = new AStarGraph();        starting_state = null;        ending_state = null;        path = new AStarPath();"
+NOT EXISTS
+"super.takeDown();		Calendar today = Calendar.getInstance();		logger.info(AGENT_NAME+"" died at ""+today.getTime().toString());"
+"try {	ThawAgent thawAct = new ThawAgent();	thawAct.setAgent(getAID());	thawAct.setRepository(jade.core.persistence.PersistenceManager.DEFAULT_REPOSITORY);	ContainerID where = new ContainerID(getContainerController().getContainerName() , null);	thawAct.setNewContainer(where);	Action a = new Action();	a.setActor(getAMS());	a.setAction(thawAct);	ACLMessage requestMsg = getRequest();	requestMsg.setOntology(PersistenceVocabulary.NAME);	getContentManager().fillContent(requestMsg, a);	addBehaviour(new MyAMSClientBehaviour(this,""ThawAgent"", requestMsg,false));}catch (Exception fe) {	fe.printStackTrace();}"
+addBehaviour(new ThawBehaviour(this));
