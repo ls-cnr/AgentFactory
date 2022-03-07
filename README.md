@@ -1,7 +1,7 @@
 # AgentFactory
 Luca's master thesis software, miraculously still working after more than 18 years. The aim was to provide a pattern-centric tool for developing JADE agents.
 
-# Patterns for agenta
+# Patterns for agents
 The need of a quality software engineering approach to design MAS arises together with the need of new methodological ways to address important issues such as ontology representation, security concerns and production costs. The introduction of an extensive pattern reuse practice can be determinant in cutting down the time and cost of developing this systems.
 Patterns can be extremely successful with MAS (even more than with object oriented systems) because the great encapsulation related to the concept of agent allows an easier identification and disposition of reusable parts. In this paper we discuss our approach to the pattern reuse that is a phase of a more comprehensive approach to agent-oriented software design.
  
